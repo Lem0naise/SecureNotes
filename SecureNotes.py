@@ -88,6 +88,8 @@ mess = Entry(textvariable = username, width = 60, borderwidth=0)
 mess.place(x= 300, y = 180, anchor = 'center')
 
 password = StringVar()
+mess2 = Entry(textvariable = password, width = 60, borderwidth=0)
+=======
 mess2 = Entry(textvariable = password, width = 60, borderwidth=0, show = "○")
 mess2.place(x= 300, y = 200, anchor = 'center')
 
