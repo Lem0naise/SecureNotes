@@ -1,13 +1,16 @@
 import tkinter as tk
 from tkinter import *
+from typing import Counter
 from PIL import Image, ImageTk
+import time
 
 root = tk.Tk()
 root.title("SecureNotes")
 root.configure(bg= "pale turquoise")
 root.resizable(0,0)
 root.geometry('500x400')
-
+global isempty
+isempty = False
 username = ''
 password = ''
 frame = Frame(root)
@@ -36,12 +39,7 @@ ul.place(x = 50, y = 180, anchor = 'center')
 ul = Label(text = "Password:", bg = "pale turquoise", fg = "SteelBlue4")
 ul.place(x = 50, y = 200, anchor = 'center')
 
-#reads logins from text file in assets
-logins = {}
-with open("assets/logins.txt") as dicti:
-    for line in dicti:
-        (key, val) = line.split()
-        logins[key] = val
+
 
 #Checking Login Details
 def login(user, passwor):
@@ -49,7 +47,7 @@ def login(user, passwor):
         #checks if the username equals that user's password
         if logins[user] == passwor:
             global logged_user 
-            logged_user = logins[user]
+            logged_user = user
             global congrats
             congrats = Label(text="Congratulations, you have successfully logged in!", bg = "pale turquoise")
             congrats.place(x=250, y=290, anchor= "center")
@@ -65,6 +63,17 @@ def login(user, passwor):
             
 #you need to keep the test here, it doesn't work without it but i don't know why
 def startlogin(test):
+    #reads logins from text file in assets
+    global logins
+    logins = {}
+    with open("assets/logins.txt") as dicti:
+        for line in dicti:
+            try:
+                (key, val) = line.split()
+                logins[key] = val
+            except:
+                isempty = True
+            
     #destroys the old "logged in" messages if they are there
     try:
         congrats.destroy()
@@ -75,29 +84,65 @@ def startlogin(test):
 
 def startlogin2():
     startlogin(2)
+
+
+def sign_up_first():
+    sign_up()
 #signup function
+
+def sign_up2(test):
+    sign_up()
+
+def sign_up3():
+    sign_up2(2)
+
 def sign_up():
-    print("signing up")
+    
+    global mess
+    global mess2
+    print("should destroy")
+    root.bind('<Return>', sign_up2)
+
+    signin.destroy()
+    signup.destroy()
+    global entersignup
+    entersignup = Button(text = "Sign Up", command = sign_up3, anchor='center')
+    entersignup.place(x= 250, y = 260, anchor = 'center')
+
+    #here put the textvariables into the login file
+    with open("assets/logins.txt", "a") as dicti:
+        if isempty == False:
+            dicti.write("\n")
+        dicti.write(username.get())
+        dicti.write(" ")
+        dicti.write(password.get())
+        dicti.write("\n")
+
+    root.destroy()
+
+
 
 #binding the enter key to the enter button 
 root.bind('<Return>', startlogin)
 
 #Input Bar
 username = StringVar()
+global mess
 mess = Entry(textvariable = username, width = 60, borderwidth=0)
 mess.place(x= 300, y = 180, anchor = 'center')
 
 password = StringVar()
-mess2 = Entry(textvariable = password, width = 60, borderwidth=0)
-=======
+global mess2
 mess2 = Entry(textvariable = password, width = 60, borderwidth=0, show = "○")
 mess2.place(x= 300, y = 200, anchor = 'center')
 
 #signin / signup buttons
+global signin
 signin = Button(text = "Sign In", command = startlogin2, anchor='center')
 signin.place(x= 250, y = 230, anchor = 'center')
 
-signup = Button(text = "Sign Up", command = sign_up, anchor='center')
+global signup
+signup = Button(text = "Sign Up (Restart App) ", command = sign_up_first, anchor='center')
 signup.place(x= 250, y = 260, anchor = 'center')
 
 
