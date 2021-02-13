@@ -1,8 +1,7 @@
 import tkinter as tk
 from tkinter import *
-from typing import Counter
 from PIL import Image, ImageTk
-import time
+
 
 root = tk.Tk()
 root.title("SecureNotes")
@@ -54,16 +53,28 @@ def login(user, passwor):
         if logins[user] == passwor:
             global logged_user 
             logged_user = user
+            with open("assets/Logged_user.scn", "w") as file:
+                file.write(logged_user.translate(encrypt_table)) 
             global congrats
             congrats = Label(text="Congratulations, you have successfully logged in!", bg = "pale turquoise")
             congrats.place(x=250, y=290, anchor= "center")
+            exec(open("assets/scnotelauncher.py").read())
+            root.destroy()
         else:
             global sorry
+            try:
+                errorr.destroy()
+            except:
+                pass
             sorry = Label(text="Sorry, that login and password are not recognized. ", bg = "pale turquoise")
             sorry.place(x=250, y=290, anchor= "center")
 
 
     except:
+            try:
+                errorr.destroy()
+            except:
+                pass
             sorry = Label(text="Sorry, that login and password are not recognized. ", bg = "pale turquoise")
             sorry.place(x=250, y=290, anchor= "center")
             
@@ -72,7 +83,7 @@ def startlogin(test):
     #reads logins from text file in assets
     global logins
     logins = {}
-    with open("assets/logins.txt") as dicti:
+    with open("assets/logins.scn") as dicti:
         for line in dicti:
             try:
                 (key, val) = line.split()
@@ -104,27 +115,39 @@ def sign_up3():
     sign_up2(2)
 
 def sign_up():
-    
-    global mess
-    global mess2
-    root.bind('<Return>', sign_up2)
+    if username.get() in logins:
+        try:
+            sorry.destroy()
+            congrats.destroy()
+        except:
+            pass
+        global errorr
+        errorr = Label(text = "You already have an account, but your password does not match. ", anchor='center', bg = "pale turquoise")
+        errorr.place(x= 250, y = 290, anchor = 'center')
+    else:
 
-    signin.destroy()
-    signup.destroy()
-    global entersignup
-    entersignup = Button(text = "Sign Up", command = sign_up3, anchor='center')
-    entersignup.place(x= 250, y = 260, anchor = 'center')
+        global mess
+        global mess2
+        root.bind('<Return>', sign_up2)
 
-    #here put the textvariables into the login file
-    with open("assets/logins.txt", "a") as dicti:
-        if isempty == False:
+        signin.destroy()
+        signup.destroy()
+        global entersignup
+        entersignup = Button(text = "Sign Up", command = sign_up3, anchor='center')
+        entersignup.place(x= 250, y = 260, anchor = 'center')
+        
+
+        #here put the textvariables into the login file
+        with open("assets/logins.scn", "a") as dicti:
+            if isempty == False:
+                dicti.write("\n")
+            dicti.write(username.get().translate(encrypt_table))
+            dicti.write(" ")
+            dicti.write(password.get().translate(encrypt_table))
             dicti.write("\n")
-        dicti.write(username.get().translate(encrypt_table))
-        dicti.write(" ")
-        dicti.write(password.get().translate(encrypt_table))
-        dicti.write("\n")
 
-    root.destroy()
+        root.destroy()
+
 
 
 
@@ -148,7 +171,7 @@ signin = Button(text = "Sign In", command = startlogin2, anchor='center')
 signin.place(x= 250, y = 230, anchor = 'center')
 
 global signup
-signup = Button(text = "Sign Up (Restart App) ", command = sign_up_first, anchor='center')
+signup = Button(text = "Sign Up (Restart) ", command = sign_up_first, anchor='center')
 signup.place(x= 250, y = 260, anchor = 'center')
 
 
