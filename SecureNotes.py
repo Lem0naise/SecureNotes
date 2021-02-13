@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 
 
 root = tk.Tk()
-root.title("SecureNotes")
+root.title("SecureNotes Launcher")
 root.configure(bg= "pale turquoise")
 root.resizable(0,0)
 root.geometry('500x400')
@@ -58,8 +58,9 @@ def login(user, passwor):
             global congrats
             congrats = Label(text="Congratulations, you have successfully logged in!", bg = "pale turquoise")
             congrats.place(x=250, y=290, anchor= "center")
-            exec(open("assets/scnotelauncher.py").read())
             root.destroy()
+            exec(open("assets/scnotelauncher.py").read())
+
         else:
             global sorry
             try:
