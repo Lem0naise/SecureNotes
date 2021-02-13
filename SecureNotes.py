@@ -36,15 +36,36 @@ ul.place(x = 50, y = 180, anchor = 'center')
 ul = Label(text = "Password:", bg = "pale turquoise", fg = "SteelBlue4")
 ul.place(x = 50, y = 200, anchor = 'center')
 
+#reads logins from text file
+logins = {}
+with open("assets/logins.txt") as dicti:
+    for line in dicti:
+        (key, val) = line.split()
+        logins[key] = val
+
 #Checking Login Details
 def login(user, passwor):
-    if user=="Ma1war3" or user=="Lem0naise":
-        if passwor== "password":
+    try:
+        if logins[user] == passwor:
+            global congrats
             congrats = Label(text="Congratulations, you have successfully logged in!", bg = "pale turquoise")
             congrats.place(x=300, y=250, anchor= "center")
+        else:
+            global sorry
+            sorry = Label(text="Sorry, that login and password are not recognized. ", bg = "pale turquoise")
+            sorry.place(x=300, y=250, anchor= "center")
 
+    except:
+        sorry = Label(text="Sorry, that login and password are not recognized. ", bg = "pale turquoise")
+        sorry.place(x=300, y=250, anchor= "center")
+        
 #you need to keep the test here, it doesn't work without it but i don't know why
 def startlogin(test):
+    try:
+        congrats.destroy()
+        sorry.destroy()
+    except:
+        pass
     login(username.get(), password.get())
 
 #binding the enter key to the enter button 
