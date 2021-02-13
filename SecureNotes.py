@@ -23,6 +23,12 @@ load = Image.open("assets\lock.png")
 load = load.resize((64, 64), Image.ANTIALIAS)
 lock = ImageTk.PhotoImage(load)
 
+#password decryption table
+decrypted = b"abcdefghijklmnop!qrstuvwxyz1234567_890ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+encrypted = b"zcxBVMNlkjhgFASDqewT RUyoIPZCXbvmnLKJHGfas!dQEWtruYOip0793682541_"
+encrypt_table = bytes.maketrans(decrypted, encrypted)
+decrypt_table = bytes.maketrans(encrypted, decrypted)
+
 #Placing Images + Text
 inputbar = Label(image = ib, bg = "pale turquoise")
 inputbar.place(x = 300, y = 200, anchor = 'center')
@@ -70,6 +76,7 @@ def startlogin(test):
         for line in dicti:
             try:
                 (key, val) = line.split()
+                key, val = key.translate(decrypt_table), val.translate(decrypt_table)
                 logins[key] = val
             except:
                 isempty = True
@@ -100,7 +107,6 @@ def sign_up():
     
     global mess
     global mess2
-    print("should destroy")
     root.bind('<Return>', sign_up2)
 
     signin.destroy()
@@ -113,9 +119,9 @@ def sign_up():
     with open("assets/logins.txt", "a") as dicti:
         if isempty == False:
             dicti.write("\n")
-        dicti.write(username.get())
+        dicti.write(username.get().translate(encrypt_table))
         dicti.write(" ")
-        dicti.write(password.get())
+        dicti.write(password.get().translate(encrypt_table))
         dicti.write("\n")
 
     root.destroy()
