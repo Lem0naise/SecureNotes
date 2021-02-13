@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
 
-
 root = tk.Tk()
 root.title("SecureNotes Launcher")
 root.configure(bg= "pale turquoise")
@@ -12,7 +11,8 @@ global isempty
 isempty = False
 username = ''
 password = ''
-frame = Frame(root)
+
+
 #Importing Images
 load = Image.open("assets\input_bar.png")
 load = load.resize((400, 19), Image.ANTIALIAS)
@@ -46,6 +46,42 @@ ul.place(x = 50, y = 200, anchor = 'center')
 
 
 
+#reading notes
+def noteprocess():
+    with open("assets/Logged_User.scn") as logg:
+        global loggeduser
+        loggs = logg.read()
+        loggeduser = loggs.strip()
+        global loggeduserpath
+        loggeduserpath = ("assets/" + loggeduser + ".scn")
+        print("all logged user works")
+
+    def startnotes():
+        try:
+            with open(loggeduserpath) as notes:
+                global note
+                note = (notes.read().translate(decrypt_table))
+            root.destroy()    
+            print("destroying old window works")   
+            root = tk.Tk()
+            root.title("SecureNotes")
+            root.configure(bg= "pale turquoise")
+            root.geometry('500x400')
+            root.geometry()
+            frame = Frame(root)
+            first_note = Label(frame, text=note)
+            first_note.grid(row = 1, column = 1)
+            
+
+        except:    
+            open(loggeduserpath, "x")
+            print("create")
+            startnotes()
+            print("creating new text file works")
+
+    startnotes()
+
+
 #Checking Login Details
 def login(user, passwor):
     try:
@@ -58,8 +94,8 @@ def login(user, passwor):
             global congrats
             congrats = Label(text="Congratulations, you have successfully logged in!", bg = "pale turquoise")
             congrats.place(x=250, y=290, anchor= "center")
-            root.destroy()
-            exec(open("assets/scnotelauncher.py").read())
+            noteprocess()
+
 
         else:
             global sorry
