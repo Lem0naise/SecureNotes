@@ -52,16 +52,17 @@ def login(user, passwor):
             logged_user = logins[user]
             global congrats
             congrats = Label(text="Congratulations, you have successfully logged in!", bg = "pale turquoise")
-            congrats.place(x=300, y=290, anchor= "center")
+            congrats.place(x=250, y=290, anchor= "center")
         else:
             global sorry
             sorry = Label(text="Sorry, that login and password are not recognized. ", bg = "pale turquoise")
-            sorry.place(x=300, y=290, anchor= "center")
+            sorry.place(x=250, y=290, anchor= "center")
+
 
     except:
             sorry = Label(text="Sorry, that login and password are not recognized. ", bg = "pale turquoise")
-            sorry.place(x=300, y=290, anchor= "center")
-        
+            sorry.place(x=250, y=290, anchor= "center")
+            
 #you need to keep the test here, it doesn't work without it but i don't know why
 def startlogin(test):
     #destroys the old "logged in" messages if they are there
@@ -92,10 +93,10 @@ mess2.place(x= 300, y = 200, anchor = 'center')
 
 #signin / signup buttons
 signin = Button(text = "Sign In", command = startlogin2, anchor='center')
-signin.place(x= 300, y = 230, anchor = 'center')
+signin.place(x= 250, y = 230, anchor = 'center')
 
 signup = Button(text = "Sign Up", command = sign_up, anchor='center')
-signup.place(x= 300, y = 260, anchor = 'center')
+signup.place(x= 250, y = 260, anchor = 'center')
 
 
 
