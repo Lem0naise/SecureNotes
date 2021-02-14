@@ -164,14 +164,17 @@ def sign_up():
         except:
             pass
         global errorr
-        errorr = Label(text = "You already have an account, but your password does not match. ", anchor='center', bg = "pale turquoise")
+        errorr = Label(text = "Username not available. ", anchor='center', bg = "pale turquoise")
         errorr.place(x= 250, y = 290, anchor = 'center')
     else:
 
         global mess
         global mess2
         root.bind('<Return>', sign_up2)
-
+        try:
+            sorry.destroy()
+        except:
+            pass    
         #here put the textvariables into the login file
         with open("assets/logins.scn", "a") as dicti:
             if isempty == False:
@@ -180,6 +183,8 @@ def sign_up():
             dicti.write(" ")
             dicti.write(password.get().translate(encrypt_table))
             dicti.write("\n")
+        errorr = Label(text = "Account created. ", anchor='center', bg = "pale turquoise")
+        errorr.place(x= 250, y = 290, anchor = 'center')
 
 
 
