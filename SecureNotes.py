@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+from typing import get_type_hints
 from PIL import Image, ImageTk
 import traceback
 
@@ -59,21 +60,42 @@ def noteprocess():
     def startnotes():
         global root
         try:
-            with open(loggeduserpath) as notes:
+            with open(loggeduserpath) as notesfile:
                 print(loggeduserpath)
                 global note
-                note = (notes.read().translate(decrypt_table))
-                print("reading works")
+                notes = (notesfile.readlines())
+                for i in range(0, len(notes)-1):
+                    #decrypts notes (all danil no credit to me :))
+                    notes[i] = notes[i].translate(decrypt_table)
+
             root.destroy()    
             print("destroying old window works")   
             root = tk.Tk()
-            root.title("SecureNotes")
+            root.title(loggeduser.translate(decrypt_table) + "'s notes")
+            print("title works")
             root.configure(bg= "pale turquoise")
             root.geometry('500x400')
             root.geometry()
-            frame = Frame(root)
-            first_note = Label(frame, text=note)
-            first_note.grid(row = 1, column = 1)
+            print("new root works")
+            noteframe = Frame(root, bg = "pale turquoise")
+            noteframe.pack()
+            #prints all notes (all danil's work)
+            rown = 1
+            columnn = 1
+            columnncounter = 0
+            for each_note in notes:
+                print(each_note)
+                each_note_label = Label(noteframe, text=each_note, bg = "pale turquoise", wraplength= 250)
+                each_note_label.grid(row=rown, column=columnn, padx=10, pady=2)
+                rown +=1
+                columnncounter +=1
+                if columnncounter==10:
+                    columnn +=1
+                    columnncounter = 0
+            print("notes works")
+
+
+
             
 
         except: 
@@ -123,7 +145,7 @@ def login(user, passwor):
 def startlogin(test):
     #reads logins from text file in assets
     global logins
-
+    
     with open("assets/logins.scn") as dicti:
         for line in dicti:
             try:
