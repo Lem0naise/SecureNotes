@@ -141,6 +141,7 @@ def startlogin(test):
         pass
     login(username.get(), password.get())
 
+
 def startlogin2():
     startlogin(2)
 
@@ -171,13 +172,6 @@ def sign_up():
         global mess2
         root.bind('<Return>', sign_up2)
 
-        signin.destroy()
-        signup.destroy()
-        global entersignup
-        entersignup = Button(text = "Sign Up", command = sign_up3, anchor='center')
-        entersignup.place(x= 250, y = 260, anchor = 'center')
-        
-
         #here put the textvariables into the login file
         with open("assets/logins.scn", "a") as dicti:
             if isempty == False:
@@ -187,7 +181,6 @@ def sign_up():
             dicti.write(password.get().translate(encrypt_table))
             dicti.write("\n")
 
-        root.destroy()
 
 
 
@@ -212,7 +205,7 @@ signin = Button(text = "Sign In", command = startlogin2, anchor='center')
 signin.place(x= 250, y = 230, anchor = 'center')
 
 global signup
-signup = Button(text = "Sign Up (Restart) ", command = sign_up_first, anchor='center')
+signup = Button(text = "Sign Up", command = sign_up_first, anchor='center')
 signup.place(x= 250, y = 260, anchor = 'center')
 
 
