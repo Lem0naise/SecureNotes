@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
+import traceback
 
 root = tk.Tk()
 root.title("SecureNotes Launcher")
@@ -54,13 +55,15 @@ def noteprocess():
         loggeduser = loggs.strip()
         global loggeduserpath
         loggeduserpath = ("assets/" + loggeduser + ".scn")
-        print("all logged user works")
 
     def startnotes():
+        global root
         try:
             with open(loggeduserpath) as notes:
+                print(loggeduserpath)
                 global note
                 note = (notes.read().translate(decrypt_table))
+                print("reading works")
             root.destroy()    
             print("destroying old window works")   
             root = tk.Tk()
@@ -73,7 +76,8 @@ def noteprocess():
             first_note.grid(row = 1, column = 1)
             
 
-        except:    
+        except: 
+            traceback.print_exc() 
             open(loggeduserpath, "x")
             print("create")
             startnotes()
