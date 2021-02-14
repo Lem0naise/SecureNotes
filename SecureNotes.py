@@ -25,7 +25,7 @@ lock = ImageTk.PhotoImage(load)
 
 #password decryption table
 decrypted = b"abcdefghijklmnop!qrstuvwxyz1234567_890ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-encrypted = b"zcxBVMNlkjhgFASDqewT RUyoIPZCXbvmnLKJHGfas!dQEWtruYOip0793682541_"
+encrypted = b"zcxBVMNlkjhgFASDqewT+RUyoIPZCXbvmnLKJHGfas!dQEWtruYOip0793682541_"
 encrypt_table = bytes.maketrans(decrypted, encrypted)
 decrypt_table = bytes.maketrans(encrypted, decrypted)
 
@@ -45,7 +45,7 @@ ul.place(x = 50, y = 180, anchor = 'center')
 ul = Label(text = "Password:", bg = "pale turquoise", fg = "SteelBlue4")
 ul.place(x = 50, y = 200, anchor = 'center')
 
-
+logins = {}
 
 #reading notes
 def noteprocess():
@@ -123,7 +123,7 @@ def login(user, passwor):
 def startlogin(test):
     #reads logins from text file in assets
     global logins
-    logins = {}
+
     with open("assets/logins.scn") as dicti:
         for line in dicti:
             try:
