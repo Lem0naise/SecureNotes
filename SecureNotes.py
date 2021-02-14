@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 import traceback
 
 root = tk.Tk()
-root.title("SecureNotes Launcher")
+root.title("SecureNotes Login ")
 root.configure(bg= "pale turquoise")
 root.resizable(0,0)
 root.geometry('500x400')
@@ -23,6 +23,14 @@ ib = ImageTk.PhotoImage(load)
 load = Image.open("assets\lock.png")
 load = load.resize((64, 64), Image.ANTIALIAS)
 lock = ImageTk.PhotoImage(load)
+
+signinbutton = Image.open("assets\sign_in.png")
+signinbutton = signinbutton.resize((131, 25), Image.ANTIALIAS)
+sibutton = ImageTk.PhotoImage(signinbutton)
+
+signupbutton = Image.open("assets\sign_up.png")
+signupbutton = signupbutton.resize((131, 25), Image.ANTIALIAS)
+subutton = ImageTk.PhotoImage(signupbutton)
 
 #password decryption table
 decrypted = b"abcdefghijklmnop!qrstuvwxyz1234567_890ABCDEFGHIJKLMNOPQRSTUVWXYZ "
@@ -85,7 +93,7 @@ def noteprocess():
             columnncounter = 0
             for each_note in notes:
                 print(each_note)
-                each_note_label = Label(noteframe, text=each_note, bg = "pale turquoise", wraplength= 250)
+                each_note_label = Label(noteframe, text=each_note, bg = "pale turquoise", wraplength= 250, borderwidth=5, relief = SUNKEN)
                 each_note_label.grid(row=rown, column=columnn, padx=10, pady=2)
                 rown +=1
                 columnncounter +=1
@@ -228,12 +236,12 @@ mess2.place(x= 300, y = 200, anchor = 'center')
 
 #signin / signup buttons
 global signin
-signin = Button(text = "Sign In", command = startlogin2, anchor='center')
+signin = Button(image = sibutton, command = startlogin2, anchor='center', bg = "pale turquoise", activebackground= "pale turquoise", borderwidth=0)
 signin.place(x= 250, y = 230, anchor = 'center')
 
 global signup
-signup = Button(text = "Sign Up", command = sign_up_first, anchor='center')
-signup.place(x= 250, y = 260, anchor = 'center')
+signup = Button(image = subutton, command = sign_up_first, anchor='center', bg = "pale turquoise", activebackground= "pale turquoise", borderwidth=0)
+signup.place(x= 250, y = 258, anchor = 'center')
 
 
 
