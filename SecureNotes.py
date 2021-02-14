@@ -1,18 +1,24 @@
+from os import unlink
 import tkinter as tk
 from tkinter import *
 from typing import get_type_hints
 from PIL import Image, ImageTk
 import traceback
+import tkinter.font as font
 
 root = tk.Tk()
 root.title("SecureNotes Login ")
-root.configure(bg= "pale turquoise")
+root.configure(bg= "gray10")
 root.resizable(0,0)
 root.geometry('500x400')
 global isempty
 isempty = False
-username = ''
-password = ''
+password = StringVar()
+username = StringVar()
+logins = {}
+
+#creating font
+deffont = font.Font(family = "arial", size="1")
 
 
 #Importing Images
@@ -34,27 +40,12 @@ subutton = ImageTk.PhotoImage(signupbutton)
 
 #password decryption table
 decrypted = b"abcdefghijklmnop!qrstuvwxyz1234567_890ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-encrypted = b"zcxBVMNlkjhgFASDqewT+RUyoIPZCXbvmnLKJHGfas!dQEWtruYOip0793682541_"
+encrypted = b"zcxBVMNlkjhgFASDqEwT+RUyoIPZCXbvmnLKJHGfas!dQ_WtruYOip0793682541e"
 encrypt_table = bytes.maketrans(decrypted, encrypted)
 decrypt_table = bytes.maketrans(encrypted, decrypted)
 
-#Placing Images + Text
-inputbar = Label(image = ib, bg = "pale turquoise")
-inputbar.place(x = 300, y = 200, anchor = 'center')
 
-inputbar = Label(image = ib, bg = "pale turquoise")
-inputbar.place(x = 300, y = 180, anchor = 'center')
 
-logolock = Label(image = lock, bg = "pale turquoise")
-logolock.place(x = 250, y = 130, anchor = 'center')
-
-ul = Label(text = "Username:", bg = "pale turquoise", fg = "SteelBlue4")
-ul.place(x = 50, y = 180, anchor = 'center')
-
-ul = Label(text = "Password:", bg = "pale turquoise", fg = "SteelBlue4")
-ul.place(x = 50, y = 200, anchor = 'center')
-
-logins = {}
 
 #reading notes
 def noteprocess():
@@ -81,25 +72,39 @@ def noteprocess():
             root = tk.Tk()
             root.title(loggeduser.translate(decrypt_table) + "'s notes")
             print("title works")
-            root.configure(bg= "pale turquoise")
-            root.geometry('500x400')
+            root.configure(bg= "gray10")
+            root.geometry('600x450')
             root.geometry()
             print("new root works")
-            noteframe = Frame(root, bg = "pale turquoise")
+            noteframe = Frame(root, bg = "gray10")
             noteframe.pack()
+
+            #saving and exiting
+            def gettext():
+                noteinputvar = noteinput.get("1.0", END)
+                with open(loggeduserpath, "w") as txtfile:
+                    txtfile.write(noteinputvar.translate(encrypt_table))
+            savebutton = Button(text="Save", bg = "gray10", command = gettext, fg = "snow", activebackground = "gray10", borderwidth = 0)
+            savebutton.pack()
             #prints all notes (all danil's work)
-            rown = 1
-            columnn = 1
-            columnncounter = 0
             for each_note in notes:
-                print(each_note)
-                each_note_label = Label(noteframe, text=each_note, bg = "pale turquoise", wraplength= 250, borderwidth=5, relief = SUNKEN)
-                each_note_label.grid(row=rown, column=columnn, padx=10, pady=2)
-                rown +=1
-                columnncounter +=1
-                if columnncounter==10:
-                    columnn +=1
-                    columnncounter = 0
+
+                noteinput = Text(noteframe, bg = "gray10", font = ("arial", 10), borderwidth=0, fg = "snow", insertbackground = "snow")
+                noteinput.grid(row=0, column=0, padx=10, pady=2)
+                with open(loggeduserpath) as txtfile:
+                     txtimported = (txtfile.read()).translate(decrypt_table)
+                if txtimported == " ":
+                    pass
+                else:    
+                    noteinput.insert(INSERT, txtimported)
+                global signup
+                
+                
+                #saving text (updating text box) every 0.5 seconds
+                #encrypting to text file
+                #future (seperate indiidual notes by special character)
+                
+
             print("notes works")
 
 
@@ -109,15 +114,21 @@ def noteprocess():
         except: 
             traceback.print_exc() 
             open(loggeduserpath, "x")
+
+            #Writes a space to the text file
+            with open(loggeduserpath, "w") as txtfile:
+                    txtfile.write(" ")
+
             print("create")
             startnotes()
             print("creating new text file works")
-
+            startnotes()
     startnotes()
 
 
 #Checking Login Details
 def login(user, passwor):
+    global sorry
     try:
         #checks if the username equals that user's password
         if logins[user] == passwor:
@@ -126,18 +137,23 @@ def login(user, passwor):
             with open("assets/Logged_user.scn", "w") as file:
                 file.write(logged_user.translate(encrypt_table)) 
             global congrats
-            congrats = Label(text="Congratulations, you have successfully logged in!", bg = "pale turquoise")
+            congrats = Label(text="Welcome Back!", bg = "gray10", fg = "dodger blue")
             congrats.place(x=250, y=290, anchor= "center")
             noteprocess()
 
 
         else:
-            global sorry
+            
             try:
                 errorr.destroy()
             except:
                 pass
-            sorry = Label(text="Sorry, that login and password are not recognized. ", bg = "pale turquoise")
+            try:
+                sorry.destroy()
+            except:
+                pass
+
+            sorry = Label(text="Incorrect username or password.", bg = "gray10", fg = "red")
             sorry.place(x=250, y=290, anchor= "center")
 
 
@@ -146,23 +162,12 @@ def login(user, passwor):
                 errorr.destroy()
             except:
                 pass
-            sorry = Label(text="Sorry, that login and password are not recognized. ", bg = "pale turquoise")
+            sorry = Label(text="Incorrect username or password.", bg = "gray10", fg = "red")
             sorry.place(x=250, y=290, anchor= "center")
             
 #you need to keep the test here, it doesn't work without it but i don't know why
 def startlogin(test):
-    #reads logins from text file in assets
-    global logins
     
-    with open("assets/logins.scn") as dicti:
-        for line in dicti:
-            try:
-                (key, val) = line.split()
-                key, val = key.translate(decrypt_table), val.translate(decrypt_table)
-                logins[key] = val
-            except:
-                isempty = True
-            
     #destroys the old "logged in" messages if they are there
     try:
         congrats.destroy()
@@ -194,10 +199,9 @@ def sign_up():
         except:
             pass
         global errorr
-        errorr = Label(text = "Username not available. ", anchor='center', bg = "pale turquoise")
+        errorr = Label(text = "Username not available. ", anchor='center', bg = "gray10", fg = "red")
         errorr.place(x= 250, y = 290, anchor = 'center')
     else:
-
         global mess
         global mess2
         root.bind('<Return>', sign_up2)
@@ -213,37 +217,93 @@ def sign_up():
             dicti.write(" ")
             dicti.write(password.get().translate(encrypt_table))
             dicti.write("\n")
-        errorr = Label(text = "Account created. ", anchor='center', bg = "pale turquoise")
+        errorr = Label(text = "Account created. ", anchor='center', bg = "gray10", fg = "dodger blue")
         errorr.place(x= 250, y = 290, anchor = 'center')
 
+def opensettings():
+
+    inputbar.destroy()
+    inputbar2.destroy()
+    logolock.destroy()
+    ul.destroy()
+    ul2.destroy()
+    mess.destroy()
+    mess2.destroy()
+    signin.destroy()
+    signup.destroy()
+    settingsbutton.destroy()
+
+    global backbutton
+    backbutton = Button(text = "Back", command = mainmenu, anchor='center', bg = "gray10", activebackground= "gray10", borderwidth=0, fg = "snow")
+    backbutton.place(x= 20, y = 10, anchor = 'center')
+
+
+def mainmenu():
+    #reads logins from text file in assets
+    global logins
+    
+    with open("assets/logins.scn") as dicti:
+        for line in dicti:
+            try:
+                (key, val) = line.split()
+                key, val = key.translate(decrypt_table), val.translate(decrypt_table)
+                logins[key] = val
+            except:
+                isempty = True
+            
+            
+    global inputbar
+    global inputbar2
+    global logolock
+    global ul
+    global ul2
+    #binding the enter key to the enter button 
+    root.bind('<Return>', startlogin)
 
 
 
+    #Placing Images + Text
+    inputbar = Label(image = ib, bg = "gray10")
+    inputbar.place(x = 290, y = 200, anchor = 'center')
 
-#binding the enter key to the enter button 
-root.bind('<Return>', startlogin)
+    inputbar2 = Label(image = ib, bg = "gray10")
+    inputbar2.place(x = 290, y = 180, anchor = 'center')
 
-#Input Bar
-username = StringVar()
-global mess
-mess = Entry(textvariable = username, width = 60, borderwidth=0)
-mess.place(x= 300, y = 180, anchor = 'center')
+    logolock = Label(image = lock, bg = "gray10")
+    logolock.place(x = 250, y = 130, anchor = 'center')
 
-password = StringVar()
-global mess2
-mess2 = Entry(textvariable = password, width = 60, borderwidth=0, show = "●")
-mess2.place(x= 300, y = 200, anchor = 'center')
+    ul = Label(text = "Username:", bg = "gray10", fg = "snow")
+    ul.place(x = 40, y = 180, anchor = 'center')
 
-#signin / signup buttons
-global signin
-signin = Button(image = sibutton, command = startlogin2, anchor='center', bg = "pale turquoise", activebackground= "pale turquoise", borderwidth=0)
-signin.place(x= 250, y = 230, anchor = 'center')
-
-global signup
-signup = Button(image = subutton, command = sign_up_first, anchor='center', bg = "pale turquoise", activebackground= "pale turquoise", borderwidth=0)
-signup.place(x= 250, y = 258, anchor = 'center')
+    ul2 = Label(text = "Password:", bg = "gray10", fg = "snow")
+    ul2.place(x = 40, y = 200, anchor = 'center')
 
 
+    #Input Bar
 
+    global mess
+    mess = Entry(textvariable = username, width = 60, borderwidth=0)
+    mess.place(x= 300, y = 180, anchor = 'center')
+
+
+    global mess2
+    mess2 = Entry(textvariable = password, width = 60, borderwidth=0, show = "●")
+    mess2.place(x= 300, y = 200, anchor = 'center')
+
+    #signin / signup buttons
+    global signin
+    signin = Button(image = sibutton, command = startlogin2, anchor='center', bg = "gray10", activebackground= "gray10", borderwidth=0, fg = "snow")
+    signin.place(x= 250, y = 230, anchor = 'center')
+
+    global signup
+    signup = Button(image = subutton, command = sign_up_first, anchor='center', bg = "gray10", activebackground= "gray10", borderwidth=0, fg = "snow")
+    signup.place(x= 250, y = 258, anchor = 'center')
+
+    #settings button
+    global settingsbutton
+    settingsbutton = Button(text = "Settings", command = opensettings, anchor='center', bg = "gray10", activebackground= "gray10", borderwidth=0, fg = "snow")
+    settingsbutton.place(x= 475, y = 385, anchor = 'center')
+
+mainmenu()
 
 root.mainloop()
