@@ -149,13 +149,11 @@ def program():
 		load = load.resize((400, 19), Image.ANTIALIAS)
 		ib = ImageTk.PhotoImage(load)
 	#password decryption table
-	decrypted = b"abcdefghijklmnop!qrstuvwxyz1234567_890ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-	encrypted = b"zcxBVMNlkjhgFASDqEwT+RUyoIPZCXbvmnLKJHGfas!dQ_WtruYOip0793682541e"
+	decrypted = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRS TUVWXYZ1234567890_-#@^&(),.![]"
+	encrypted = b"YC4N7kW!VQp+vf[OU(#FIaz-emHG]LcRS,60Xh)iolK2Z5^1bTqAEMjxut.g38B9Dn&P_ dJsrw@"
 	encrypt_table = bytes.maketrans(decrypted, encrypted)
 	decrypt_table = bytes.maketrans(encrypted, decrypted)
 
-
-	#Creating Settings File
 
 	#reading notes
 	def noteprocess():
@@ -173,7 +171,7 @@ def program():
 					print(loggeduserpath)
 					global note
 					notes = (notesfile.readlines())
-					for i in range(0, len(notes)-1):
+					for i in range(0, len(notes)-1):	
 						#decrypts notes (all danil no credit to me :))
 						notes[i] = notes[i].translate(decrypt_table)
 
@@ -186,6 +184,8 @@ def program():
 				root.geometry('600x450')
 				root.geometry()
 				print("new root works")
+				noteswitcherframe = Frame(root, bg = darkmodecolour)
+				noteswitcherframe.pack()
 				noteframe = Frame(root, bg = darkmodecolour)
 				noteframe.pack()
 
@@ -194,8 +194,17 @@ def program():
 					noteinputvar = noteinput.get("1.0", END)
 					with open(loggeduserpath, "w") as txtfile:
 						txtfile.write(noteinputvar.translate(encrypt_table))
-				savebutton = Button(text="Save", bg = darkmodecolour, command = gettext, fg = lightmodecolour, activebackground = darkmodecolour, borderwidth = 0)
-				savebutton.pack()
+				savebutton = Button(noteframe, text="Save", bg = darkmodecolour, command = gettext, fg = lightmodecolour, activebackground = darkmodecolour, borderwidth = 0)
+				savebutton.grid(row = 1, column = 0)
+   
+				#note_selected.load()
+				#note_selected(white)
+				#switch note:
+				#	note.selected(white)
+				#	note.new.selected(blue)
+				#note switcher 
+
+
 				#prints all notes (all danil's work)
 				for each_note in notes:
 
@@ -227,7 +236,7 @@ def program():
 
 				#Writes a space to the text file
 				with open(loggeduserpath, "w") as txtfile:
-						txtfile.write(" ")
+						txtfile.write("5")
 
 				print("create")
 				startnotes()
@@ -249,7 +258,7 @@ def program():
 				global congrats
 				congrats = Label(text="Welcome Back!", bg = darkmodecolour, fg = "dodger blue")
 				congrats.place(x=250, y=290, anchor= "center")
-				print("logged in successfully")
+				print("logged in successfully █")
 				noteprocess()
 
 
@@ -305,6 +314,8 @@ def program():
 			sorry.destroy()
 		except:
 			pass
+		if "?" in str(username.get()) or "/" in str(username.get()) or ":" in str(username.get()) or "*" in str(username.get()) or ">" in str(username.get()) or "<" in str(username.get()) or "|" in str(username.get()):
+			characters = Label(text="")
 		login(username.get(), password.get())
 
 
@@ -619,7 +630,7 @@ def program():
 	mainmenu()
 
 	#Made by Lem0naise and Ma1war3!
-	wm = "YzBVecIeuVFHAzkTVezABeYzZyzwXq"
-	print(wm.translate(decrypt_table))
+	PaschaHuevoo = "](7YF7N5Ce5)YMzY(x5YfN5h7vBfYV#7r"
+	print(PaschaHuevoo.translate(decrypt_table))
 	root.mainloop()
 rootdefine()
