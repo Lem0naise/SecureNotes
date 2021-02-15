@@ -463,7 +463,7 @@ def program():
 		backbutton.place(x= 20, y = 385, anchor = 'center')
 		global resbutton
 		resbutton = Button(image = resbuttonimage, command = rootdestroy, anchor='center', bg = darkmodecolour, activebackground= darkmodecolour, borderwidth=0, fg = lightmodecolour)
-		resbutton.place(x= 100, y = 190, anchor = 'center')
+		resbutton.place(x= 97, y = 196, anchor = 'center')
 		def checksautosavesetting():
 			global PaschaHuevo
 			global PaschaHuevoDark
@@ -516,6 +516,10 @@ def program():
 		darkmodelabel = Label(text = "- Darkmode (Requires Restart)", bg = darkmodecolour, fg = lightmodecolour, anchor = 'center', font = ("Ariel", 15))
 		darkmodelabel.place(x = 120, y = 140)
 
+		global restartlabel
+		restartlabel = Label(text = "- Restart", bg = darkmodecolour, fg = lightmodecolour, anchor = 'center', font = ("Ariel", 15))
+		restartlabel.place(x = 120, y = 182)
+
 		#10.4 width, 10y
 
 
@@ -529,6 +533,7 @@ def program():
 			backbutton.destroy()
 			resbutton.destroy()
 			settings.destroy()
+			restartlabel.destroy()
 		except:
 			pass
 		#reads logins from text file in assets
@@ -613,5 +618,8 @@ def program():
 
 	mainmenu()
 
+	#Made by Lem0naise and Ma1war3!
+	wm = "YzBVecIeuVFHAzkTVezABeYzZyzwXq"
+	print(wm.translate(decrypt_table))
 	root.mainloop()
 rootdefine()
