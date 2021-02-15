@@ -67,9 +67,6 @@ deffont = font.Font(family = "arial", size="1")
 
 
 #Importing Images
-load = Image.open("assets\input_bar.png")
-load = load.resize((400, 19), Image.ANTIALIAS)
-ib = ImageTk.PhotoImage(load)
 
 load = Image.open("assets\lock.png")
 load = load.resize((64, 64), Image.ANTIALIAS)
@@ -96,7 +93,14 @@ if darkmodetemp.strip() == "False":
 	backimage = Image.open("assets\\settings_icon_black.png")
 	backimage = backimage.resize((25,25), Image.ANTIALIAS)
 	settings_icon = ImageTk.PhotoImage(backimage)
+
+	global inputbardarkmode
+	inputbardarkmode = True
+	load = Image.open("assets\input_bar_black.png")
+	load = load.resize((400, 21), Image.ANTIALIAS)
+	ib = ImageTk.PhotoImage(load)
 else:
+	inputbardarkmode = False
 	backimage = Image.open("assets\\box_checked.png")
 	backimage = backimage.resize((36,33), Image.ANTIALIAS)
 	boxchecked = ImageTk.PhotoImage(backimage)
@@ -108,6 +112,11 @@ else:
 	backimage = Image.open("assets\\settings_icon.png")
 	backimage = backimage.resize((25,25), Image.ANTIALIAS)
 	settings_icon = ImageTk.PhotoImage(backimage)
+	
+
+	load = Image.open("assets\input_bar.png")
+	load = load.resize((400, 19), Image.ANTIALIAS)
+	ib = ImageTk.PhotoImage(load)
 #password decryption table
 decrypted = b"abcdefghijklmnop!qrstuvwxyz1234567_890ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 encrypted = b"zcxBVMNlkjhgFASDqEwT+RUyoIPZCXbvmnLKJHGfas!dQ_WtruYOip0793682541e"
@@ -382,20 +391,16 @@ def opensettings():
 			
 			#checking autosave setting
 			if lineautosave.strip() == "True":
-				print("print this if ur bad")
 				PaschaHuevo = boxchecked
 			elif lineautosave.strip() == "False":
-				print("danil is best")
 				PaschaHuevo = boxunchecked
 			else:
 				print("Autosave is " + lineautosave.strip())
 
 			#checking darkmode settings
 			if linedarkmode.strip() == "True":
-				print("print this if ur bad")
 				PaschaHuevoDark = boxchecked
 			elif linedarkmode.strip() == "False":
-				print("danil is best")
 				PaschaHuevoDark = boxunchecked
 
 		except:
@@ -406,7 +411,6 @@ def opensettings():
 				idekanymore.write("True")
 			checksautosavesetting()
 	checksautosavesetting()
-	print(PaschaHuevo)
 	
 	global autosavebutton
 	autosavebutton = Button(image = PaschaHuevo, command = autosave1, anchor='center', bg = darkmodecolour, activebackground= darkmodecolour, borderwidth=0, fg = lightmodecolour)
@@ -460,10 +464,27 @@ def mainmenu():
 	root.bind('<Return>', startlogin)
 
 
-
+	global mess2
 	#Placing Images + Text
-	inputbar = Label(image = ib, bg = darkmodecolour)
-	inputbar.place(x = 290, y = 200, anchor = 'center')
+	if inputbardarkmode == False:
+		inputbar = Label(image = ib, bg = darkmodecolour)
+		inputbar.place(x = 290, y = 200, anchor = 'center')
+
+		mess2 = Entry(textvariable = password, width = 60, borderwidth=0, show = "●")
+		mess2.place(x= 300, y = 200, anchor = 'center')
+
+		ul2 = Label(text = "Password:", bg = darkmodecolour, fg = lightmodecolour)
+		ul2.place(x = 40, y = 200, anchor = 'center')
+
+	else:
+		inputbar = Label(image = ib, bg = darkmodecolour)
+		inputbar.place(x = 290, y = 203, anchor = 'center')
+
+		mess2 = Entry(textvariable = password, width = 60, borderwidth=0, show = "●")
+		mess2.place(x= 300, y = 203, anchor = 'center')
+
+		ul2 = Label(text = "Password:", bg = darkmodecolour, fg = lightmodecolour)
+		ul2.place(x = 40, y = 203, anchor = 'center')
 
 	inputbar2 = Label(image = ib, bg = darkmodecolour)
 	inputbar2.place(x = 290, y = 180, anchor = 'center')
@@ -474,8 +495,7 @@ def mainmenu():
 	ul = Label(text = "Username:", bg = darkmodecolour, fg = lightmodecolour)
 	ul.place(x = 40, y = 180, anchor = 'center')
 
-	ul2 = Label(text = "Password:", bg = darkmodecolour, fg = lightmodecolour)
-	ul2.place(x = 40, y = 200, anchor = 'center')
+
 
 
 
@@ -486,9 +506,7 @@ def mainmenu():
 	mess.place(x= 300, y = 180, anchor = 'center')
 
 
-	global mess2
-	mess2 = Entry(textvariable = password, width = 60, borderwidth=0, show = "●")
-	mess2.place(x= 300, y = 200, anchor = 'center')
+
 
 	#signin / signup buttons
 	global signin
