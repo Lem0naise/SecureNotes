@@ -6,6 +6,10 @@ from PIL import Image, ImageTk
 import traceback
 import tkinter.font as font
 
+try:
+	root.destroy()
+except:
+	pass
 #reading settings files before start (to apply darkmode)
 try:
 	with open("assets/settings.scn") as settingsfile:
@@ -439,6 +443,7 @@ def mainmenu():
 		darkmodebutton.destroy()
 		darkmodelabel.destroy()
 		backbutton.destroy()
+		#destroy restart button
 		settings.destroy()
 	except:
 		pass
