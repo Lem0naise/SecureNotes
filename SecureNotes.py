@@ -29,7 +29,7 @@ except:
 		idekanymore.write("False")
 		idekanymore.write("\n")
 		idekanymore.write("True")
-		
+
 	with open("assets/settings.scn") as settingsfile:
 		notes = (settingsfile.readlines())
 		autosavetemp = str(notes[0])
@@ -83,18 +83,31 @@ signupbutton = Image.open("assets\sign_up.png")
 signupbutton = signupbutton.resize((131, 25), Image.ANTIALIAS)
 subutton = ImageTk.PhotoImage(signupbutton)
 
-backimage = Image.open("assets\\settings_icon.png")
-backimage = backimage.resize((25,25), Image.ANTIALIAS)
-settings_icon = ImageTk.PhotoImage(backimage)
 
-backimage = Image.open("assets\\box_checked.png")
-backimage = backimage.resize((36,33), Image.ANTIALIAS)
-boxchecked = ImageTk.PhotoImage(backimage)
+if darkmodetemp.strip() == "False":
+	backimage = Image.open("assets\\box_checked_black.png")
+	backimage = backimage.resize((36,33), Image.ANTIALIAS)
+	boxchecked = ImageTk.PhotoImage(backimage)
 
-backimage = Image.open("assets\\box_unchecked.png")
-backimage = backimage.resize((36,33), Image.ANTIALIAS)
-boxunchecked = ImageTk.PhotoImage(backimage)
+	backimage = Image.open("assets\\box_unchecked_black.png")
+	backimage = backimage.resize((36,33), Image.ANTIALIAS)
+	boxunchecked = ImageTk.PhotoImage(backimage)
 
+	backimage = Image.open("assets\\settings_icon_black.png")
+	backimage = backimage.resize((25,25), Image.ANTIALIAS)
+	settings_icon = ImageTk.PhotoImage(backimage)
+else:
+	backimage = Image.open("assets\\box_checked.png")
+	backimage = backimage.resize((36,33), Image.ANTIALIAS)
+	boxchecked = ImageTk.PhotoImage(backimage)
+
+	backimage = Image.open("assets\\box_unchecked.png")
+	backimage = backimage.resize((36,33), Image.ANTIALIAS)
+	boxunchecked = ImageTk.PhotoImage(backimage)
+
+	backimage = Image.open("assets\\settings_icon.png")
+	backimage = backimage.resize((25,25), Image.ANTIALIAS)
+	settings_icon = ImageTk.PhotoImage(backimage)
 #password decryption table
 decrypted = b"abcdefghijklmnop!qrstuvwxyz1234567_890ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 encrypted = b"zcxBVMNlkjhgFASDqEwT+RUyoIPZCXbvmnLKJHGfas!dQ_WtruYOip0793682541e"
