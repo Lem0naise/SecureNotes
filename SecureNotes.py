@@ -6,9 +6,49 @@ from PIL import Image, ImageTk
 import traceback
 import tkinter.font as font
 
+#reading settings files before start (to apply darkmode)
+try:
+	with open("assets/settings.scn") as settingsfile:
+		notes = (settingsfile.readlines())
+		autosavetemp = str(notes[0])
+		darkmodetemp = str(notes[1])
+
+	#setting dark mode colour
+	if darkmodetemp.strip().lower() == "true":
+		darkmodecolour = "gray10"
+		lightmodecolour = "snow"
+	else:
+		darkmodecolour = "snow"
+		lightmodecolour = "gray10"
+
+except:
+	traceback.print_exc()
+	with open("assets/settings.scn", "x") as temp:
+		pass
+	with open("assets/settings.scn", "w") as idekanymore:
+		idekanymore.write("False")
+		idekanymore.write("\n")
+		idekanymore.write("True")
+		
+	with open("assets/settings.scn") as settingsfile:
+		notes = (settingsfile.readlines())
+		autosavetemp = str(notes[0])
+		darkmodetemp = str(notes[1])
+
+	#setting dark mode colour
+	if darkmodetemp.strip().lower() == "true":
+		darkmodecolour = "gray10"
+		lightmodecolour = "snow"
+	else:
+		darkmodecolour = "snow"
+		lightmodecolour = "gray10"
+
 root = tk.Tk()
 root.title("SecureNotes Login ")
-root.configure(bg= "gray10")
+try:
+	root.configure(bg= darkmodecolour)
+except:
+	root.configure(bg = "gray10")
 root.resizable(0,0)
 root.geometry('500x400')
 global isempty
@@ -89,11 +129,11 @@ def noteprocess():
 			root = tk.Tk()
 			root.title(loggeduser.translate(decrypt_table) + "'s notes")
 			print("title works")
-			root.configure(bg= "gray10")
+			root.configure(bg= darkmodecolour)
 			root.geometry('600x450')
 			root.geometry()
 			print("new root works")
-			noteframe = Frame(root, bg = "gray10")
+			noteframe = Frame(root, bg = darkmodecolour)
 			noteframe.pack()
 
 			#saving and exiting
@@ -101,12 +141,12 @@ def noteprocess():
 				noteinputvar = noteinput.get("1.0", END)
 				with open(loggeduserpath, "w") as txtfile:
 					txtfile.write(noteinputvar.translate(encrypt_table))
-			savebutton = Button(text="Save", bg = "gray10", command = gettext, fg = "snow", activebackground = "gray10", borderwidth = 0)
+			savebutton = Button(text="Save", bg = darkmodecolour, command = gettext, fg = lightmodecolour, activebackground = darkmodecolour, borderwidth = 0)
 			savebutton.pack()
 			#prints all notes (all danil's work)
 			for each_note in notes:
 
-				noteinput = Text(noteframe, bg = "gray10", font = ("arial", 10), borderwidth=0, fg = "snow", insertbackground = "snow")
+				noteinput = Text(noteframe, bg = darkmodecolour, font = ("arial", 10), borderwidth=0, fg = lightmodecolour, insertbackground = lightmodecolour)
 				noteinput.grid(row=0, column=0, padx=10, pady=2)
 				with open(loggeduserpath) as txtfile:
 					 txtimported = (txtfile.read()).translate(decrypt_table)
@@ -154,7 +194,7 @@ def login(user, passwor):
 			with open("assets/Logged_user.scn", "w") as file:
 				file.write(logged_user.translate(encrypt_table)) 
 			global congrats
-			congrats = Label(text="Welcome Back!", bg = "gray10", fg = "dodger blue")
+			congrats = Label(text="Welcome Back!", bg = darkmodecolour, fg = "dodger blue")
 			congrats.place(x=250, y=290, anchor= "center")
 			noteprocess()
 
@@ -170,7 +210,7 @@ def login(user, passwor):
 			except:
 				pass
 
-			sorry = Label(text="Incorrect username or password.", bg = "gray10", fg = "red")
+			sorry = Label(text="Incorrect username or password.", bg = darkmodecolour, fg = "red")
 			sorry.place(x=250, y=290, anchor= "center")
 
 
@@ -179,7 +219,7 @@ def login(user, passwor):
 				errorr.destroy()
 			except:
 				pass
-			sorry = Label(text="Incorrect username or password.", bg = "gray10", fg = "red")
+			sorry = Label(text="Incorrect username or password.", bg = darkmodecolour, fg = "red")
 			sorry.place(x=250, y=290, anchor= "center")
 			
 #you need to keep the test here, it doesn't work without it but i don't know why
@@ -216,7 +256,7 @@ def sign_up():
 		except:
 			pass
 		global errorr
-		errorr = Label(text = "Username not available. ", anchor='center', bg = "gray10", fg = "red")
+		errorr = Label(text = "Username not available. ", anchor='center', bg = darkmodecolour, fg = "red")
 		errorr.place(x= 250, y = 290, anchor = 'center')
 	else:
 		global mess
@@ -234,7 +274,7 @@ def sign_up():
 			dicti.write(" ")
 			dicti.write(password.get().translate(encrypt_table))
 			dicti.write("\n")
-		errorr = Label(text = "Account created. ", anchor='center', bg = "gray10", fg = "dodger blue")
+		errorr = Label(text = "Account created. ", anchor='center', bg = darkmodecolour, fg = "dodger blue")
 		errorr.place(x= 250, y = 290, anchor = 'center')
 
 def autosave1():
@@ -280,11 +320,12 @@ def createsettingsfile():
 				sosage.write(autosave)
 				sosage.write("\n")
 			except:
-				pass
+				sosage.write("False")
+				sosage.write("\n")
 			try:
 				sosage.write(darkmode)
 			except:
-				pass
+				sosage.write("True")
 	except:
 		traceback.print_exc()
 		with open("assets/settings.scn", "x") as temp:
@@ -311,7 +352,7 @@ def opensettings():
 	global PaschaHuevo
 	global PaschaHuevoDark
 	global backbutton
-	backbutton = Button(text="Back", command = mainmenu, anchor='center', bg = "gray10", activebackground= "gray10", borderwidth=0, fg = "snow")
+	backbutton = Button(text="Back", command = mainmenu, anchor='center', bg = darkmodecolour, activebackground= darkmodecolour, borderwidth=0, fg = lightmodecolour)
 	backbutton.place(x= 20, y = 385, anchor = 'center')
 	def checksautosavesetting():
 		global PaschaHuevo
@@ -355,19 +396,19 @@ def opensettings():
 	print(PaschaHuevo)
 	
 	global autosavebutton
-	autosavebutton = Button(image = PaschaHuevo, command = autosave1, anchor='center', bg = "gray10", activebackground= "gray10", borderwidth=0, fg = "snow")
+	autosavebutton = Button(image = PaschaHuevo, command = autosave1, anchor='center', bg = darkmodecolour, activebackground= darkmodecolour, borderwidth=0, fg = lightmodecolour)
 	autosavebutton.place(x= 100, y = 115, anchor = 'center')
 
 	global autosavelabel
-	autosavelabel = Label(text = "- Autosave", bg = "gray10", fg = "snow", anchor = 'center', font = ("Ariel", 15))
+	autosavelabel = Label(text = "- Autosave", bg = darkmodecolour, fg = lightmodecolour, anchor = 'center', font = ("Ariel", 15))
 	autosavelabel.place(x = 120, y = 100)
 
 	global darkmodebutton
-	darkmodebutton = Button(image = PaschaHuevoDark, command = darkmode1, anchor='center', bg = "gray10", activebackground= "gray10", borderwidth=0, fg = "snow")
+	darkmodebutton = Button(image = PaschaHuevoDark, command = darkmode1, anchor='center', bg = darkmodecolour, activebackground= darkmodecolour, borderwidth=0, fg = lightmodecolour)
 	darkmodebutton.place(x= 100, y = 155, anchor = 'center')
 
 	global darkmodelabel
-	darkmodelabel = Label(text = "- Darkmode", bg = "gray10", fg = "snow", anchor = 'center', font = ("Ariel", 15))
+	darkmodelabel = Label(text = "- Darkmode (Requires Restart)", bg = darkmodecolour, fg = lightmodecolour, anchor = 'center', font = ("Ariel", 15))
 	darkmodelabel.place(x = 120, y = 140)
 
 	#10.4 width, 10y
@@ -408,19 +449,19 @@ def mainmenu():
 
 
 	#Placing Images + Text
-	inputbar = Label(image = ib, bg = "gray10")
+	inputbar = Label(image = ib, bg = darkmodecolour)
 	inputbar.place(x = 290, y = 200, anchor = 'center')
 
-	inputbar2 = Label(image = ib, bg = "gray10")
+	inputbar2 = Label(image = ib, bg = darkmodecolour)
 	inputbar2.place(x = 290, y = 180, anchor = 'center')
 
-	logolock = Label(image = lock, bg = "gray10")
+	logolock = Label(image = lock, bg = darkmodecolour)
 	logolock.place(x = 250, y = 130, anchor = 'center')
 
-	ul = Label(text = "Username:", bg = "gray10", fg = "snow")
+	ul = Label(text = "Username:", bg = darkmodecolour, fg = lightmodecolour)
 	ul.place(x = 40, y = 180, anchor = 'center')
 
-	ul2 = Label(text = "Password:", bg = "gray10", fg = "snow")
+	ul2 = Label(text = "Password:", bg = darkmodecolour, fg = lightmodecolour)
 	ul2.place(x = 40, y = 200, anchor = 'center')
 
 
@@ -438,16 +479,16 @@ def mainmenu():
 
 	#signin / signup buttons
 	global signin
-	signin = Button(image = sibutton, command = startlogin2, anchor='center', bg = "gray10", activebackground= "gray10", borderwidth=0, fg = "snow")
+	signin = Button(image = sibutton, command = startlogin2, anchor='center', bg = darkmodecolour, activebackground= darkmodecolour, borderwidth=0, fg = lightmodecolour)
 	signin.place(x= 250, y = 230, anchor = 'center')
 
 	global signup
-	signup = Button(image = subutton, command = sign_up_first, anchor='center', bg = "gray10", activebackground= "gray10", borderwidth=0, fg = "snow")
+	signup = Button(image = subutton, command = sign_up_first, anchor='center', bg = darkmodecolour, activebackground= darkmodecolour, borderwidth=0, fg = lightmodecolour)
 	signup.place(x= 250, y = 258, anchor = 'center')
 
 	#settings button
 	global settingsbutton
-	settingsbutton = Button(image = settings_icon, command = opensettings, anchor='center', bg = "gray10", activebackground= "gray10", borderwidth=0, fg = "snow")
+	settingsbutton = Button(image = settings_icon, command = opensettings, anchor='center', bg = darkmodecolour, activebackground= darkmodecolour, borderwidth=0, fg = lightmodecolour)
 	settingsbutton.place(x= 485, y = 385, anchor = 'center')
 
 mainmenu()
