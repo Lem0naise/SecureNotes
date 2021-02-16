@@ -150,7 +150,7 @@ def program():
 		ib = ImageTk.PhotoImage(load)
 	#password decryption table
 	decrypted = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRS TUVWXYZ1234567890_-#@^&(),.![]"
-	encrypted = b"YC4N7kW!VQp+vf[OU(#FIaz-emHG]LcRS,60Xh)iolK2Z5^1bTqAEMjxut.g38B9Dn&P_ dJsrw@"
+	encrypted = b"YC4N7kW!VQp vf[OU(#FIaz-emHG]LcRS,60Xh)iolK2Z5^1bTqAEMjxut.g38B9Dn&P_ydJsrw@"
 	encrypt_table = bytes.maketrans(decrypted, encrypted)
 	decrypt_table = bytes.maketrans(encrypted, decrypted)
 
@@ -258,7 +258,7 @@ def program():
 				global congrats
 				congrats = Label(text="Welcome Back!", bg = darkmodecolour, fg = "dodger blue")
 				congrats.place(x=250, y=290, anchor= "center")
-				print("logged in successfully █")
+				print("logged in successfully ")
 				noteprocess()
 
 
@@ -270,6 +270,10 @@ def program():
 					pass
 				try:
 					sorry.destroy()
+				except:
+					pass
+				try:
+					characters.destroy()
 				except:
 					pass
 
@@ -294,6 +298,10 @@ def program():
 					congrats.destroy()
 				except:
 					pass
+				try:
+					characters.destroy()
+				except:
+					pass
 
 				sorry = Label(text="Incorrect username or password.", bg = darkmodecolour, fg = "red")
 				sorry.place(x=250, y=290, anchor= "center")
@@ -314,8 +322,6 @@ def program():
 			sorry.destroy()
 		except:
 			pass
-		if "?" in str(username.get()) or "/" in str(username.get()) or ":" in str(username.get()) or "*" in str(username.get()) or ">" in str(username.get()) or "<" in str(username.get()) or "|" in str(username.get()):
-			characters = Label(text="")
 		login(username.get(), password.get())
 
 
@@ -344,6 +350,7 @@ def program():
 					pass
 		global accountcreate
 		global errorr
+		global characters
 		if username.get() in logins:
 			try:
 				accountcreate.destroy()
@@ -361,39 +368,52 @@ def program():
 				congrats.destroy()
 			except:
 				pass
+			try:
+				characters.destroy()
+			except:
+				pass
 
 			errorr = Label(text = "Username not available. ", anchor='center', bg = darkmodecolour, fg = "red")
 			errorr.place(x= 250, y = 290, anchor = 'center')
 		else:
-			global mess
-			global mess2
-			root.bind('<Return>', sign_up2)
 			try:
-				accountcreate.destroy()
+				characters.destroy()
 			except:
 				pass
-			try:
-				errorr.destroy()
-			except:
-				pass
-			try:
-				sorry.destroy()
-			except:
-				pass
-			try:
-				congrats.destroy()
-			except:
-				pass
-			#here put the textvariables into the login file
-			with open("assets/logins.scn", "a") as dicti:
-				if isempty == False:
+			if "?" in str(username.get()) or "/" in str(username.get()) or ":" in str(username.get()) or "*" in str(username.get()) or ">" in str(username.get()) or "<" in str(username.get()) or "|" in str(username.get()) or " " in str(username.get()):
+				characters = Label(text="Your username cannot contain a space or the following characters: / : * > < |", bg = darkmodecolour, fg = "red")
+				characters.place(x=250, y = 290, anchor = "center")
+				
+			else:
+				global mess
+				global mess2
+				root.bind('<Return>', sign_up2)
+				try:
+					accountcreate.destroy()
+				except:
+					pass
+				try:
+					errorr.destroy()
+				except:
+					pass
+				try:
+					sorry.destroy()
+				except:
+					pass
+				try:
+					congrats.destroy()
+				except:
+					pass
+				#here put the textvariables into the login file
+				with open("assets/logins.scn", "a") as dicti:
+					if isempty == False:
+						dicti.write("\n")
+					dicti.write(username.get().translate(encrypt_table))
+					dicti.write(" ")
+					dicti.write(password.get().translate(encrypt_table))
 					dicti.write("\n")
-				dicti.write(username.get().translate(encrypt_table))
-				dicti.write(" ")
-				dicti.write(password.get().translate(encrypt_table))
-				dicti.write("\n")
-			accountcreate = Label(text = "Account created. ", anchor='center', bg = darkmodecolour, fg = "dodger blue")
-			accountcreate.place(x= 250, y = 290, anchor = 'center')
+				accountcreate = Label(text = "Account created. ", anchor='center', bg = darkmodecolour, fg = "dodger blue")
+				accountcreate.place(x= 250, y = 290, anchor = 'center')
 
 	def autosave1():
 		global autosave
@@ -466,6 +486,10 @@ def program():
 		signin.destroy()
 		signup.destroy()
 		settingsbutton.destroy()
+		try:
+			characters.destroy()
+		except:
+			pass
 
 		global PaschaHuevo
 		global PaschaHuevoDark
@@ -547,13 +571,17 @@ def program():
 			restartlabel.destroy()
 		except:
 			pass
+		try:
+			characters.destroy()
+		except:
+			pass
 		#reads logins from text file in assets
 
 		
 		with open("assets/logins.scn") as dicti:
 			for line in dicti:
 				try:
-					(key, val) = line.split()
+					(key, val) = line.split(" ")
 					key, val = key.translate(decrypt_table), val.translate(decrypt_table)
 					logins[key] = val
 				except:
