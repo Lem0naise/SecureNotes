@@ -14,8 +14,18 @@ html {
 body {
     font-size: 1rem;
     font-family: "Helvetica Neue", Arial, sans-serif;
-    line-height: 1.5;
+    line-height: 1;
+    
 }
+
+p {
+    margin:1rem;
+}
+
+div {
+    margin:auto;
+}
+
 
 .content {
     margin: 64px auto;
@@ -77,9 +87,46 @@ body {
     font-family: futura;
 }
 
+.text {
+    font-size: 20px;
+    font-family: futura;
+}
+
+.contact {
+    font-size: 20px;
+    font-family: futura;
+
+
+}
+
+.desc {
+    font-size: 20px;
+    font-family: tahoma;
+}
 .URL-input {
     width: 60%;
     padding: 12px 20px;
       margin: 8px 0;
       box-sizing: border-box;
+}
+
+div.gallery {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 23%;
+  }
+  
+div.gallery:hover {
+    border: 1px solid #777;
+}
+
+div.gallery img {
+    width: 100%;
+    height: auto;
+}
+
+div.desc {
+    padding: 15px;
+    text-align: center;
 }
