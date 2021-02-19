@@ -1,1 +1,1 @@
-Go to the releases tab on the right hand side to download the program!
+Visit [the homepage](https://lem0naise.github.io/projects) to download this project.
